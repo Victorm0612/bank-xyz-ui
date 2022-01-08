@@ -24,7 +24,6 @@
     "no-console": "off",
     "no-unused-vars": "warn",
     "space-before-blocks": "warn",
-    "allowShortCircuit": true,
-    "allowTernary": true
+    "no-unused-expressions": [{ "allowShortCircuit": 0, "allowTernary": true }]
   }
 }
