@@ -3,7 +3,7 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.4-node # primary container - where job steps are run
+      - image: circleci/node:12.22.7-browsers # primary container - where job steps are run
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
@@ -11,7 +11,7 @@ jobs:
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    working_directory: ~/circleci-demo-workflows
+    working_directory: ~/bank-xyz-ui
     steps:
       - checkout
       # Bundle install dependencies
@@ -27,7 +27,7 @@ jobs:
   deploy:
     machine:
         enabled: true
-    working_directory: ~/circleci-demo-workflows
+    working_directory: ~/bank-xyz-ui
     environment:
       HEROKU_APP: "sleepy-refuge-55486" # define env var $HEROKU_APP
     steps:
@@ -38,7 +38,7 @@ jobs:
 
       - run:
           command: |
-            git push heroku sequential-branch-filter:main
+            git push heroku
             heroku run rake db:migrate
             sleep 5 # sleep for 5 seconds to wait for dynos
             heroku restart
@@ -53,4 +53,7 @@ workflows:
             - build
           filters:
             branches:
-              only: sequential-branch-filter
+              only:
+                - master
+                - develop
+                - release
