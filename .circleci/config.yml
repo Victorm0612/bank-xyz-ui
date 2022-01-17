@@ -6,6 +6,8 @@ jobs:
 
     working_directory: ~/bank-xyz-ui
 
+    deploy-dev:
+      machine: true
     steps:
       - checkout
       # Download and cache dependencies
@@ -28,3 +30,10 @@ jobs:
       - run: yarn lint
 
       - run: yarn build
+      - run:
+          name: Build and push Docker image to Heroku
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+              HEROKU_API_KEY=${9c432291-164b-40c6-8aa7-2322c3ffa826} heroku container:login
+              HEROKU_API_KEY=${9c432291-164b-40c6-8aa7-2322c3ffa826} heroku container:push -a xyz-bank-dev web
+              HEROKU_API_KEY=${9c432291-164b-40c6-8aa7-2322c3ffa826} heroku container:release -a xyz-bank-dev web      
