@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest": true
   },
   "extends": [
     "plugin:react/recommended",
@@ -20,10 +21,22 @@
   "plugins": ["react", "react-hooks", "prettier"],
   "rules": {
     "prettier/prettier": ["warn", { "singleQuote": true, "parser": "flow" }],
+    "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-console": "off",
     "no-unused-vars": "warn",
     "space-before-blocks": "warn",
     "no-unused-expressions": 0
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.spec.js",
+        "**/*.spec.jsx"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
