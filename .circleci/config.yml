@@ -28,5 +28,3 @@ jobs:
       - run: yarn lint
 
       - run: yarn build
-
-      - run: git push heroku master
