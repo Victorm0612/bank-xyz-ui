@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: node:16.13.1
+      - image: ubuntu-2004:202010-01
 
     working_directory: ~/bank-xyz-ui
 
@@ -18,24 +18,44 @@ jobs:
             - v1-dependencies-
 
           # Use BASH instead of DASH! see: https://ubuntuforums.org/showthread.php?t=1932504
+      - run: sudo apt-get
       - run: apt-get install -y sudo # https://discuss.circleci.com/t/sudo-command-not-found/14208/4
       - run: ls -al /bin/sh && sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh && ls -al /bin/sh
 
-      - run: yarn install
+      - run:
+          name: Install dependencies
+          command:
+            yarn install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - run: 
+          name: Running lint
+          command: yarn lint          
+
       # run tests!
-      - run: yarn test
+      - run: 
+          name: Running tests
+          command: yarn test
 
-      - run: yarn lint
-
-      - run: yarn build
       - run:
-          name: Build and push Docker image to Heroku
+          name: Setup branch environment variable
+          command: >
+            if [ "$CIRCLE_BRANCH" = "master" ]; then
+              echo 'export BRANCH_MAP="prod"' >> $BASH_ENV;
+            elif [ "$CIRCLE_BRANCH" = "release" ]; then
+              echo 'export BRANCH_MAP="qa"' >> $BASH_ENV;
+            else
+              echo 'export BRANCH_MAP="dev"' >> $BASH_ENV;
+            fi
+      - run:
+          name: Build the project
+          command: yarn build -- -c ${BRANCH_MAP} --no-progress
+      - run:
+          name: Push Docker image to Heroku
           command: |
             sudo curl https://cli-assets.heroku.com/install.sh | sh
               HEROKU_API_KEY=${9c432291-164b-40c6-8aa7-2322c3ffa826} heroku container:login
