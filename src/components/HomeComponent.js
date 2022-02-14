@@ -35,12 +35,15 @@ const HomeComponent = () => {
     setDocumentNumber(e.target.value);
   };
 
-  const handlerChangeClickDocument = (e) => {
+  const handlerDeleteWord = (e) => {
+    e.preventDefault();
     setDocumentNumber((prevState) =>
-      e.target.value.length
-        ? `${prevState}${e.target.value}`
-        : prevState.substring(0, prevState.length - 1)
+      prevState.substring(0, prevState.length - 1)
     );
+  };
+
+  const handlerChangeClickDocument = (e) => {
+    setDocumentNumber((prevState) => `${prevState}${e.target.value}`);
   };
 
   const handlerChangeNext = (e) => {
@@ -56,7 +59,6 @@ const HomeComponent = () => {
         </BackDropComponent>
       )}
       <div className="home">
-        <h1 className="home-title">¡Bienvenido a XYZ Bank!</h1>
         <div className="d-flex justify-content-center home-body align-items-center mt-3">
           <section className="d-flex flex-column w-100 align-items-center">
             <select
@@ -78,7 +80,10 @@ const HomeComponent = () => {
             />
           </section>
           <section className="w-100 text-center">
-            <NumpadComponent onChangeDocument={handlerChangeClickDocument} />
+            <NumpadComponent
+              onChangeDocument={handlerChangeClickDocument}
+              onDeleteWord={handlerDeleteWord}
+            />
           </section>
         </div>
         <button

@@ -4,7 +4,7 @@ import { BsFillBackspaceFill } from 'react-icons/bs';
 
 const numArr = [1, 4, 7];
 
-const NumpadComponent = ({ onChangeDocument }) => (
+const NumpadComponent = ({ onChangeDocument, onDeleteWord }) => (
   <>
     {numArr.map((num) => (
       <div key={num} className="row d-flex justify-content-center">
@@ -36,13 +36,13 @@ const NumpadComponent = ({ onChangeDocument }) => (
       <input
         type="button"
         className="numpad-button numpad-button"
-        onChange={onChangeDocument}
+        onClick={onChangeDocument}
         value={0}
       />
       <button
         type="button"
         className="numpad-button numpad-button"
-        onClick={onChangeDocument}
+        onClick={onDeleteWord}
       >
         <BsFillBackspaceFill />
       </button>

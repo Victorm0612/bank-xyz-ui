@@ -1,5 +1,11 @@
-.navbar {
-  display: flex;
+.nav {
   padding: 0.5rem 1.3rem;
   padding-top: 1.6rem;
+  margin-bottom: 2rem;
+
+  img {
+    position: absolute;
+    left: 1%;
+    top: 3%;
+  }
 }

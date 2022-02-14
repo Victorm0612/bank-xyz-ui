@@ -5,7 +5,9 @@ import NavbarComponent from './components/NavbarComponent';
 
 const App = () => (
   <div className="App">
-    <NavbarComponent />
+    <NavbarComponent>
+      <h1 className="home-title text-center">¡Bienvenido a XYZ Bank!</h1>
+    </NavbarComponent>
     <HomeComponent />
   </div>
 );
