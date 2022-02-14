@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './HomeComponent.scss';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
 import NumpadComponent from './NumpadComponent';
 import spinner from '../assets/spinner.svg';
 import BackDropComponent from './UI/BackdropComponent';
+import { loginUser } from '../helper/httpHelpers/usersHttp';
+import { toastActions } from '../store/toast';
 
 const documentsType = [
   {
@@ -19,17 +22,30 @@ const documentsType = [
 const HomeComponent = () => {
   const [documentNumber, setDocumentNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const isAUser = async () => {
-      setTimeout(() => {
+      try {
+        const data = await loginUser(documentNumber);
+        console.log(data);
+      } catch (error) {
+        dispatch(
+          toastActions.setInfo({
+            title: 'Error',
+            text: error.message,
+            type: 'error',
+            show: true
+          })
+        );
+      } finally {
         setIsLoading(false);
-      }, 3000);
+      }
     };
 
     if (!isLoading) return;
     isAUser();
-  }, [isLoading]);
+  }, [isLoading, documentNumber, dispatch]);
 
   const handlerChangeDocument = (e) => {
     setDocumentNumber(e.target.value);
