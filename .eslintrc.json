@@ -29,6 +29,7 @@
     "no-unused-expressions": 0,
     "arrow-body-style": ["error", "as-needed"],
     "react/prop-types": "off",
+    "consistent-return": "off",
     "react/function-component-definition": [1, {
       "namedComponents": ["function-expression", "arrow-function"],
       "unnamedComponents": ["function-expression", "arrow-function"]

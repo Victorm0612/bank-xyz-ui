@@ -6,28 +6,34 @@ import './ToastComponent.scss';
 const ToastComponent = () => {
   const { title, text, type, show } = useSelector((state) => state.toast);
   const dispatch = useDispatch();
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
-    setInterval(() => {
-      if (timer !== 0) {
-        setTimer((prevState) => prevState - 1);
-      } else {
-        dispatch(
-          toastActions.setInfo({
-            title,
-            text,
-            type,
-            show: false
-          })
-        );
-      }
-    }, 1000);
-  });
+    if (!show) return;
+    if (timer === 10) {
+      dispatch(
+        toastActions.setInfo({
+          title,
+          text,
+          type,
+          show: false
+        })
+      );
+      setTimer(0);
+      return;
+    }
+    const counter = setInterval(() => {
+      setTimer((prevState) => prevState + 1);
+    }, 350);
+
+    return () => {
+      clearInterval(counter);
+    };
+  }, [timer, show, dispatch, title, text, type]);
   return (
     <div
       className={`toast ${show ? 'show' : ''} toast-color__${type} ${
-        timer <= 2 ? 'toast-not__show' : ''
+        timer >= 8 ? 'toast-not__show' : ''
       }`}
     >
       <div className={`toast-border toast-border__${type}`} />

@@ -8,6 +8,6 @@ export const loginUser = async (code) => {
     const response = await axios.get(`/login/${code}`);
     return response.data;
   } catch (error) {
-    return error.message;
+    throw error.message;
   }
 };

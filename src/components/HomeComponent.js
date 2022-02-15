@@ -33,7 +33,7 @@ const HomeComponent = () => {
         dispatch(
           toastActions.setInfo({
             title: 'Error',
-            text: error.message,
+            text: error,
             type: 'error',
             show: true
           })
