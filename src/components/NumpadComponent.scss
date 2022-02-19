@@ -1,0 +1,25 @@
+@import "/src/variables";
+
+.numpad {
+  &-button {
+    border-radius: 10px;
+    width: 9rem;
+    height: 7rem;
+    border: none;
+    margin: 0.2rem 0.2rem;
+    font-size: $sizes-2;
+    font-weight: bold;
+    color: rgb(56, 56, 56);
+    background-color: white;
+    box-shadow: 0 0 4px $shadow;
+
+    &__empty {
+      opacity: 0;
+      cursor: default;
+    }
+
+    &:active {
+      box-shadow: inset 0 0 20px rgba(18, 98, 218, 0.356);
+    }
+  }
+}

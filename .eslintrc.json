@@ -26,7 +26,15 @@
     "no-console": "off",
     "no-unused-vars": "warn",
     "space-before-blocks": "warn",
-    "no-unused-expressions": 0
+    "no-unused-expressions": 0,
+    "arrow-body-style": ["error", "as-needed"],
+    "react/prop-types": "off",
+    "consistent-return": "off",
+    "no-plusplus": 0,
+    "react/function-component-definition": [1, {
+      "namedComponents": ["function-expression", "arrow-function"],
+      "unnamedComponents": ["function-expression", "arrow-function"]
+    }]
   },
   "overrides": [
     {
