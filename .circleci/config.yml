@@ -15,6 +15,10 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run:
+          name: Pull heroku
+          command:
+            git pull heroku master
+      - run:
           name: Install dependencies
           command:
             yarn install
