@@ -12,12 +12,10 @@ const toastSlice = createSlice({
   initialState,
   reducers: {
     setInfo(state, { payload }) {
-      return {
-        text: payload.text,
-        title: payload.title,
-        type: payload.type,
-        show: payload.show
-      };
+      state.text = payload.text;
+      state.title = payload.title;
+      state.type = payload.type;
+      state.show = payload.sho;
     }
   }
 });

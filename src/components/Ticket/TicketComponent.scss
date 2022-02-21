@@ -1,0 +1,49 @@
+@import "/src/variables";
+
+.ticket {
+  height: 100vh;
+  margin-top: 3rem;
+  &-card {
+    width: 50rem;
+    height: 27rem;
+    border-radius: 20px;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+
+    &__title {
+      color: $title-color;
+      font-weight: bold;
+      font-size: 3.2rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+      padding: 2rem 2rem;
+      width: 35rem;
+    }
+
+    &__order {
+      font-size: 6rem;
+    }
+  }
+  &-button__home {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    box-shadow: 0 0 5px $shadow;
+    background: white;
+    border: none;
+
+    & svg {
+      color: $title-color;
+      margin-left: 0.3rem;
+      margin-top: 0.3rem;
+      width: 2rem;
+      height: 3rem;
+
+      path:active {
+        color: $title-color;
+      }
+    }
+  }
+}
