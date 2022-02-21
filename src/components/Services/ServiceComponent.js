@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ServiceComponent.scss';
 
-const ServiceComponent = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [servicio, setServicio] = useState();
-  return <div>Servicio Elegido</div>;
+const ServiceComponent = ({ service, onSelectService }) => {
+  const handlerSelectService = (e) => {
+    e.preventDefault();
+    onSelectService(service.type);
+  };
+
+  return (
+    <button
+      type="button"
+      className="card service text-start"
+      onClick={handlerSelectService}
+    >
+      <h4>{service.serviceName}</h4>
+      <p>{service.description}</p>
+    </button>
+  );
 };
 
 export default ServiceComponent;

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './HomeComponent.scss';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import NumpadComponent from './NumpadComponent';
 import spinner from '../assets/spinner.svg';
 import BackDropComponent from './UI/BackdropComponent';
 import { loginUser } from '../helper/httpHelpers/usersHttp';
 import { toastActions } from '../store/toast';
+import { userActions } from '../store/user';
 
 const documentsType = [
   {
@@ -23,12 +25,26 @@ const HomeComponent = () => {
   const [documentNumber, setDocumentNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const isAUser = async () => {
+      if (!documentNumber) {
+        dispatch(
+          toastActions.setInfo({
+            title: 'Warning',
+            text: 'Por favor, ingrese su documento de identidad.',
+            type: 'warning',
+            show: true
+          })
+        );
+        setIsLoading(false);
+        return;
+      }
       try {
         const data = await loginUser(documentNumber);
-        console.log(data);
+        dispatch(userActions.setInfo(data));
+        navigate('services', { replace: true });
       } catch (error) {
         dispatch(
           toastActions.setInfo({
@@ -42,10 +58,10 @@ const HomeComponent = () => {
         setIsLoading(false);
       }
     };
-
     if (!isLoading) return;
     isAUser();
-  }, [isLoading, documentNumber, dispatch]);
+    return () => setIsLoading(false);
+  }, [isLoading, documentNumber, dispatch, navigate]);
 
   const handlerChangeDocument = (e) => {
     setDocumentNumber(e.target.value);
@@ -75,40 +91,46 @@ const HomeComponent = () => {
         </BackDropComponent>
       )}
       <div className="home">
-        <div className="d-flex justify-content-center home-body align-items-center mt-3">
-          <section className="d-flex flex-column w-100 align-items-center">
-            <select
-              name="documents_type"
-              id="documents_type"
-              className="m-2 home-input__select"
-              readOnly
+        <div className="row">
+          <div className="d-flex justify-content-center home-body align-items-center mt-3 col-12">
+            <div className="row h-100 w-100">
+              <section className="d-flex flex-column align-items-center col-6 col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                <select
+                  name="documents_type"
+                  id="documents_type"
+                  className="m-2 home-input__select"
+                  readOnly
+                >
+                  {documentsType.map((doc) => (
+                    <option key={doc.id} value={doc.id}>
+                      {doc.text}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  className="home-input__id m-2"
+                  value={documentNumber}
+                  onChange={handlerChangeDocument}
+                />
+              </section>
+              <section className="text-center col-6 col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                <NumpadComponent
+                  onChangeDocument={handlerChangeClickDocument}
+                  onDeleteWord={handlerDeleteWord}
+                />
+              </section>
+            </div>
+          </div>
+          <div className="w-100">
+            <button
+              className="home-button__send col-12"
+              type="button"
+              onClick={handlerChangeNext}
             >
-              {documentsType.map((doc) => (
-                <option key={doc.id} value={doc.id}>
-                  {doc.text}
-                </option>
-              ))}
-            </select>
-            <input
-              className="home-input__id m-2"
-              value={documentNumber}
-              onChange={handlerChangeDocument}
-            />
-          </section>
-          <section className="w-100 text-center">
-            <NumpadComponent
-              onChangeDocument={handlerChangeClickDocument}
-              onDeleteWord={handlerDeleteWord}
-            />
-          </section>
+              <BsFillArrowRightCircleFill />
+            </button>
+          </div>
         </div>
-        <button
-          className="home-button__send"
-          type="button"
-          onClick={handlerChangeNext}
-        >
-          <BsFillArrowRightCircleFill />
-        </button>
       </div>
     </>
   );
