@@ -84,7 +84,9 @@ const ServicesMenuComponent = () => {
           {group.map((service) => (
             <div
               key={service.service_id}
-              className={`col-${12 / group.length}`}
+              className={`col-lg-${
+                12 / group.length
+              } col-xs-12 col-sm-12 col-md-12 d-flex justify-content-center`}
             >
               <ServiceComponent
                 service={service}
