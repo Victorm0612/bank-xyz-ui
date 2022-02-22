@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './LoginComponent.scss';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import {
-  Switch,
-  Link
-} from "react-router-dom";
+import { Switch, Link } from 'react-router-dom';
 import spinner from '../../assets/spinner.svg';
 import BackDropComponent from '../UI/BackdropComponent';
 import { loginUser } from '../../helper/httpHelpers/usersHttp';
@@ -38,7 +35,7 @@ const LoginComponent = () => {
 
     if (!isLoading) return;
     isAUser();
-  }, [isLoading, emailUser, passwordUser,  dispatch]);
+  }, [isLoading, emailUser, passwordUser, dispatch]);
 
   const handlerChangeEmail = (e) => {
     setEmailUser(e.target.value);
@@ -80,9 +77,9 @@ const LoginComponent = () => {
           onClick={handlerChangeNext}
         >
           <Link to="/options">
-           <BsFillArrowRightCircleFill /> 
+            <BsFillArrowRightCircleFill />
           </Link>
-          </button>
+        </button>
       </div>
     </>
   );

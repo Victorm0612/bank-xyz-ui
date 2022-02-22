@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './MenuOptionsComponent.scss';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Switch, Link } from 'react-router-dom';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
-import {
-  Switch,
-  Link
-} from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import spinner from '../../assets/spinner.svg';
 import BackDropComponent from '../UI/BackdropComponent';
@@ -41,7 +37,7 @@ const MenuOptionsComponent = () => {
 
     if (!isLoading) return;
     isAUser();
-  }, [isLoading,  dispatch]);
+  }, [isLoading, dispatch]);
 
   const handlerChangeNext = (e) => {
     e.preventDefault();
@@ -56,7 +52,7 @@ const MenuOptionsComponent = () => {
       {new Date().toLocaleTimeString}
   };
 */
-  return ( 
+  return (
     <>
       {isLoading && (
         <BackDropComponent>
@@ -66,33 +62,33 @@ const MenuOptionsComponent = () => {
       <div className="menuOption">
         <div className="d-flex justify-content-center home-body align-items-center mt-1">
           <section className="d-flex flex-column w-100 align-items-center">
-        <button
-          className="menuOption-option_button mt-3"
-          type="button"
-          onClick={handlerChangeNext}
-        >
-          <Link to="/home">
-           <h2>Home</h2> 
-          </Link>
-        </button>
-        <button
-          className="menuOption-option_button mt-3"
-          type="button"
-          onClick={handlerChangeNext}
-        >
-          <Link to="/waiting">
-           <h2>Waiting</h2> 
-          </Link>
-        </button>
-          <button
-          className="menuOption-option_button mt-3"
-          type="button"
-          onClick={handlerChangeNext}
-        >
-          <Link to="/waiting">
-           <h2>DashBoard</h2> 
-          </Link>
-          </button>        
+            <button
+              className="menuOption-option_button mt-3"
+              type="button"
+              onClick={handlerChangeNext}
+            >
+              <Link to="/home">
+                <h2>Home</h2>
+              </Link>
+            </button>
+            <button
+              className="menuOption-option_button mt-3"
+              type="button"
+              onClick={handlerChangeNext}
+            >
+              <Link to="/waiting">
+                <h2>Waiting</h2>
+              </Link>
+            </button>
+            <button
+              className="menuOption-option_button mt-3"
+              type="button"
+              onClick={handlerChangeNext}
+            >
+              <Link to="/waiting">
+                <h2>DashBoard</h2>
+              </Link>
+            </button>
           </section>
         </div>
       </div>

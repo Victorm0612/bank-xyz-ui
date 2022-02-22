@@ -29,7 +29,7 @@ const App = () => {
       <Routes>
         <Route path="/home" exact element={<HomeComponent />} />
         <Route path="/services" element={<ServicesMenuComponent />} />
-        <Route path="/services/:id" element={<ServiceComponent />} />
+        <Route path="/services/:id" element={<TicketComponent />} />
         <Route path="/" exact element={<LoginComponent />} />
         <Route path="/waiting" element={<WaitingComponent />} />
         <Route path="/options" element={<MenuOptionsComponent />} />
