@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import './LoginComponent.scss';
+import './MenuOptionsComponent.scss';
+import { Route, Routes } from 'react-router-dom';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
 import {
   Switch,
   Link
 } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import spinner from '../../assets/spinner.svg';
 import BackDropComponent from '../UI/BackdropComponent';
 import { loginUser } from '../../helper/httpHelpers/usersHttp';
 import { toastActions } from '../../store/toast';
+// import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
-const LoginComponent = () => {
-  const [emailUser, setEmailUser] = useState('');
-  const [passwordUser, setPasswordUser] = useState('');
+const MenuOptionsComponent = () => {
+  const [waiting, setWaiting] = useState('');
+  const [dash, setDash] = useState('');
+  const [ticket, setTicket] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const isAUser = async () => {
       try {
-        const data = await loginUser(emailUser);
+        const data = await loginUser(isLoading);
         console.log(data);
       } catch (error) {
         dispatch(
@@ -38,54 +41,63 @@ const LoginComponent = () => {
 
     if (!isLoading) return;
     isAUser();
-  }, [isLoading, emailUser, passwordUser,  dispatch]);
-
-  const handlerChangeEmail = (e) => {
-    setEmailUser(e.target.value);
-  };
-  const handlerChangePassword = (e) => {
-    setPasswordUser(e.target.value);
-  };
+  }, [isLoading,  dispatch]);
 
   const handlerChangeNext = (e) => {
     e.preventDefault();
     setIsLoading(true);
   };
 
-  return (
+  /*
+  function(){
+      var fecha = new Date();
+      var horas = fecha.getHours();
+      var minutos = fecha.getMinutes();
+      {new Date().toLocaleTimeString}
+  };
+*/
+  return ( 
     <>
       {isLoading && (
         <BackDropComponent>
           <img src={spinner} alt="loading-data" />
         </BackDropComponent>
       )}
-      <div className="login">
+      <div className="menuOption">
         <div className="d-flex justify-content-center home-body align-items-center mt-1">
           <section className="d-flex flex-column w-100 align-items-center">
-            <input
-              className="login-input_data m-2"
-              value={emailUser}
-              onChange={handlerChangeEmail}
-            />
-            <input
-              className="login-input_data m-2"
-              value={passwordUser}
-              onChange={handlerChangePassword}
-            />
-          </section>
-        </div>
         <button
-          className="login-confirm_button"
+          className="menuOption-option_button mt-3"
           type="button"
           onClick={handlerChangeNext}
         >
-          <Link to="/options">
-           <BsFillArrowRightCircleFill /> 
+          <Link to="/home">
+           <h2>Home</h2> 
           </Link>
-          </button>
+        </button>
+        <button
+          className="menuOption-option_button mt-3"
+          type="button"
+          onClick={handlerChangeNext}
+        >
+          <Link to="/waiting">
+           <h2>Waiting</h2> 
+          </Link>
+        </button>
+          <button
+          className="menuOption-option_button mt-3"
+          type="button"
+          onClick={handlerChangeNext}
+        >
+          <Link to="/waiting">
+           <h2>DashBoard</h2> 
+          </Link>
+          </button>        
+          </section>
+        </div>
       </div>
     </>
   );
 };
 
-export default LoginComponent;
+export default MenuOptionsComponent;
