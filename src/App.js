@@ -11,6 +11,7 @@ import ToastComponent from './components/UI/ToastComponent';
 import WaitingComponent from './components/WaitingComponent/WaitingComponent';
 import MenuOptionsComponent from './components/MenuOptions/MenuOptionsComponent';
 
+  // instalar git-lens
 
 const App = () => (
   <div className="App">
