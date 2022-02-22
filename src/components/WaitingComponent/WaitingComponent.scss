@@ -1,0 +1,54 @@
+@import "/src/variables";
+
+.waiting {
+  height: 100vh;
+
+  &-title {
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(22, 22, 22, 0.603);
+  }
+
+  &-body {
+    padding: 0 4rem;
+    height: 30rem;
+  }
+
+  &-input__select {
+    border-radius: 10px;
+    width: 35rem;
+    height: 5rem;
+    font-size: $sizes-1;
+    padding: 0 1rem;
+    border: none;
+    box-shadow: 0 0 8px $shadow;
+  }
+
+  &-input_data {
+    border-radius: 10px;
+    width: 35rem;
+    height: 5rem;
+    font-size: $sizes-1;
+    padding: 0 1rem;
+    border: none;
+    box-shadow: 0 0 8px $shadow;
+  }
+
+  &-confirm_button {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+
+    & svg {
+      color: white;
+      height: 100%;
+      width: 100%;
+
+      path:active {
+        color: rgba(255, 255, 255, 0.808);
+      }
+    }
+  }
+}
