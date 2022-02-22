@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './LoginComponent.scss';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import { Switch, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import spinner from '../../assets/spinner.svg';
 import BackDropComponent from '../UI/BackdropComponent';
 import { loginUser } from '../../helper/httpHelpers/usersHttp';

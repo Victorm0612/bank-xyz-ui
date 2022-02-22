@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './MenuOptionsComponent.scss';
-import { Route, Routes, Switch, Link } from 'react-router-dom';
-import { BsFillArrowRightCircleFill } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import spinner from '../../assets/spinner.svg';
 import BackDropComponent from '../UI/BackdropComponent';
@@ -10,9 +9,6 @@ import { toastActions } from '../../store/toast';
 // import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 const MenuOptionsComponent = () => {
-  const [waiting, setWaiting] = useState('');
-  const [dash, setDash] = useState('');
-  const [ticket, setTicket] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
