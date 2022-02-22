@@ -13,6 +13,23 @@
     background-color: white;
     box-shadow: 0 0 4px $shadow;
 
+    @media (max-width: 768px) {
+      width: 9rem;
+      height: 4rem;
+    }
+    @media (min-width: 768px) {
+      width: 9rem;
+      height: 5rem;
+    }
+    @media (min-width: 992px) {
+      width: 6rem;
+      height: 5rem;
+    }
+    @media (min-width: 1200px) {
+      width: 9rem;
+      height: 7rem;
+    }
+
     &__empty {
       opacity: 0;
       cursor: default;

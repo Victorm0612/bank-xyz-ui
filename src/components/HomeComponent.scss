@@ -22,6 +22,23 @@
     padding: 0 1rem;
     border: none;
     box-shadow: 0 0 8px $shadow;
+
+    @media (max-width: 768px) {
+      width: 20rem;
+      height: 5rem;
+    }
+    @media (min-width: 768px) {
+      width: 20rem;
+      height: 5rem;
+    }
+    @media (min-width: 992px) {
+      width: 20rem;
+      height: 5rem;
+    }
+    @media (min-width: 1200px) {
+      width: 35rem;
+      height: 5rem;
+    }
   }
 
   &-input__id {
@@ -32,6 +49,23 @@
     padding: 0 1rem;
     border: none;
     box-shadow: 0 0 8px $shadow;
+
+    @media (max-width: 768px) {
+      width: 20rem;
+      height: 5rem;
+    }
+    @media (min-width: 768px) {
+      width: 20rem;
+      height: 5rem;
+    }
+    @media (min-width: 992px) {
+      width: 20rem;
+      height: 5rem;
+    }
+    @media (min-width: 1200px) {
+      width: 35rem;
+      height: 5rem;
+    }
   }
 
   &-button__send {
