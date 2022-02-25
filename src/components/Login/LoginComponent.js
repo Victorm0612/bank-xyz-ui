@@ -61,11 +61,13 @@ const LoginComponent = () => {
           <section className="d-flex flex-column w-100 align-items-center">
             <input
               className="login-input_data m-2"
+              placeholder="Correo electrónico"
               value={emailUser}
               onChange={handlerChangeEmail}
             />
             <input
               className="login-input_data m-2"
+              placeholder="Contraseña"
               value={passwordUser}
               onChange={handlerChangePassword}
             />

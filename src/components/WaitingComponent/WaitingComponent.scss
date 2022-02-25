@@ -1,54 +1,38 @@
 @import "/src/variables";
 
-.waiting {
+.waiting-room {
   height: 100vh;
+  width: 100%;
+  margin: 0;
 
-  &-title {
-    color: white;
-    font-weight: bold;
-    text-shadow: 0 0 6px rgba(22, 22, 22, 0.603);
-  }
+  &__panel {
+    background: white;
+    height: 100vh;
+    position: absolute;
+    z-index: 100;
+    right: 0;
+    top: 0;
+    width: 20rem;
 
-  &-body {
-    padding: 0 4rem;
-    height: 30rem;
-  }
-
-  &-input__select {
-    border-radius: 10px;
-    width: 35rem;
-    height: 5rem;
-    font-size: $sizes-1;
-    padding: 0 1rem;
-    border: none;
-    box-shadow: 0 0 8px $shadow;
-  }
-
-  &-input_data {
-    border-radius: 10px;
-    width: 35rem;
-    height: 5rem;
-    font-size: $sizes-1;
-    padding: 0 1rem;
-    border: none;
-    box-shadow: 0 0 8px $shadow;
-  }
-
-  &-confirm_button {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    background: transparent;
-    border: none;
-
-    & svg {
-      color: white;
-      height: 100%;
-      width: 100%;
-
-      path:active {
-        color: rgba(255, 255, 255, 0.808);
-      }
+    ul {
+      padding: 0;
     }
+
+    li {
+      list-style-type: none;
+      box-shadow: 0 0 5px $shadow;
+      border-radius: 10px;
+      margin: 2rem 0;
+      font-size: 2rem;
+      font-weight: bold;
+
+    }
+  }
+
+  &__publicity {
+    width: 64rem;
+    height: 36rem;
+    margin-left: 6rem;
+    box-shadow: 0 0 6px $shadow;
   }
 }

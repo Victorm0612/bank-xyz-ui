@@ -64,7 +64,7 @@ const MenuOptionsComponent = () => {
               onClick={handlerChangeNext}
             >
               <Link to="/home">
-                <h2>Home</h2>
+                <h2>Solicitar Ticket</h2>
               </Link>
             </button>
             <button
@@ -73,7 +73,7 @@ const MenuOptionsComponent = () => {
               onClick={handlerChangeNext}
             >
               <Link to="/waiting">
-                <h2>Waiting</h2>
+                <h2>Sala de espera</h2>
               </Link>
             </button>
             <button
@@ -82,7 +82,7 @@ const MenuOptionsComponent = () => {
               onClick={handlerChangeNext}
             >
               <Link to="/waiting">
-                <h2>DashBoard</h2>
+                <h2>Panel de administración</h2>
               </Link>
             </button>
           </section>

@@ -15,6 +15,9 @@ const App = () => {
   const { pathname } = useLocation();
 
   const getTitle = (path) => {
+    if (path.includes('home')) return 'Login';
+    if (path.includes('options')) return 'Menú de opciones';
+    if (path.includes('waiting')) return 'Sala de espera';
     if (path.includes('services')) return 'Elige un servicio';
     if (path.includes('ticket')) return 'Ticket';
     if (path.includes('/')) return '¡Bienvenido a XYZ Bank!';
