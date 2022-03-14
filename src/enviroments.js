@@ -3,7 +3,7 @@ import packageJson from '../package.json';
 const { version } = packageJson;
 
 const localEnv = {
-  apiUrl: 'https://32decd89-4c18-4756-ac79-feb9c74a327c.mock.pstmn.io/',
+  apiUrl: 'http://localhost:8000/',
   version,
   env: 'local'
 };

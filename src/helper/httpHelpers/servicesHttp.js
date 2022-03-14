@@ -5,7 +5,7 @@ const axios = axiosInstance;
 
 export const getServices = async (token) => {
   try {
-    const response = await axios.get(`/services`, {
+    const response = await axios.get(`/readService/`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

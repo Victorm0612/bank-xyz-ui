@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.scss';
+import { useSelector } from 'react-redux';
 import HomeComponent from './components/HomeComponent';
 import LoginComponent from './components/Login/LoginComponent';
 import NavbarComponent from './components/NavbarComponent';
@@ -13,14 +14,15 @@ import MenuOptionsComponent from './components/MenuOptions/MenuOptionsComponent'
 
 const App = () => {
   const { pathname } = useLocation();
+  const { isLogged, role } = useSelector((state) => state.user);
 
   const getTitle = (path) => {
-    if (path.includes('home')) return 'Login';
+    if (path.includes('home')) return '¡Bienvenido a XYZ Bank!';
     if (path.includes('options')) return 'Menú de opciones';
     if (path.includes('waiting')) return 'Sala de espera';
     if (path.includes('services')) return 'Elige un servicio';
     if (path.includes('ticket')) return 'Ticket';
-    if (path.includes('/')) return '¡Bienvenido a XYZ Bank!';
+    if (path.includes('/')) return 'Login';
   };
 
   return (
@@ -30,12 +32,14 @@ const App = () => {
         <h1 className="home-title text-center">{getTitle(pathname)}</h1>
       </NavbarComponent>
       <Routes>
-        <Route path="/home" exact element={<HomeComponent />} />
-        <Route path="/services" element={<ServicesMenuComponent />} />
-        <Route path="/services/:id" element={<TicketComponent />} />
-        <Route path="/" exact element={<LoginComponent />} />
-        <Route path="/waiting" element={<WaitingComponent />} />
-        <Route path="/options" element={<MenuOptionsComponent />} />
+        {isLogged && <Route path="/home" exact element={<HomeComponent />} />}
+        {isLogged && (
+          <Route path="/services" element={<ServicesMenuComponent />} />
+        )}
+        {isLogged && <Route path="/ticket/:id" element={<TicketComponent />} />}
+        {!isLogged && <Route path="/" exact element={<LoginComponent />} />}
+        {isLogged && <Route path="/waiting" element={<WaitingComponent />} />}
+        {!role && <Route path="/options" element={<MenuOptionsComponent />} />}
         <Route path="*" element={<NotFoundedComponent />} />
       </Routes>
     </div>

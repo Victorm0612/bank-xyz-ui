@@ -9,7 +9,7 @@ const TicketComponent = () => {
   const data = location.state;
 
   const returnToHome = () => {
-    navigate('/', { replace: true });
+    navigate('/options', { replace: true });
   };
   return (
     <div className="ticket d-flex flex-column align-items-center">

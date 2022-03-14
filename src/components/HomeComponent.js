@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './HomeComponent.scss';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import NumpadComponent from './NumpadComponent';
 import spinner from '../assets/spinner.svg';
 import BackDropComponent from './UI/BackdropComponent';
-import { loginUser } from '../helper/httpHelpers/usersHttp';
+import { getUserById } from '../helper/httpHelpers/usersHttp';
 import { toastActions } from '../store/toast';
+import { clientActions } from '../store/client';
 import { userActions } from '../store/user';
 
 const documentsType = [
@@ -24,6 +25,7 @@ const documentsType = [
 const HomeComponent = () => {
   const [documentNumber, setDocumentNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -41,10 +43,34 @@ const HomeComponent = () => {
         setIsLoading(false);
         return;
       }
+      if (Number(documentNumber) === 9586) {
+        dispatch(userActions.logout());
+        navigate('/', { replace: true });
+      }
       try {
-        const data = await loginUser(documentNumber);
-        dispatch(userActions.setInfo(data));
-        navigate('services', { replace: true });
+        const [dataUser] = await getUserById(token, documentNumber);
+        dispatch(
+          clientActions.setInfo({
+            firstName: dataUser.firstName,
+            lastName: dataUser.lastName,
+            docType: dataUser.docType,
+            docNumber: dataUser.docNumber,
+            role: dataUser.role,
+            email: dataUser.email,
+            password: dataUser.password
+          })
+        );
+        if (dataUser.role) {
+          return navigate('/services', { replace: true });
+        }
+        return dispatch(
+          toastActions.setInfo({
+            title: 'Info',
+            text: 'Usted no es cliente de XYZ Bank',
+            type: 'info',
+            show: true
+          })
+        );
       } catch (error) {
         dispatch(
           toastActions.setInfo({
@@ -61,7 +87,7 @@ const HomeComponent = () => {
     if (!isLoading) return;
     isAUser();
     return () => setIsLoading(false);
-  }, [isLoading, documentNumber, dispatch, navigate]);
+  }, [isLoading, documentNumber, dispatch, navigate, token]);
 
   const handlerChangeDocument = (e) => {
     setDocumentNumber(e.target.value);

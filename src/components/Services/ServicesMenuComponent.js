@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import spinner from '../../assets/spinner.svg';
 import { getServices } from '../../helper/httpHelpers/servicesHttp';
@@ -13,6 +13,7 @@ import './ServicesMenuComponent.scss';
 
 const ServicesMenuComponent = () => {
   const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(true);
   const [action, setAction] = useState('getService');
   const [serviceSelected, setServiceSelected] = useState();
@@ -22,7 +23,7 @@ const ServicesMenuComponent = () => {
   useEffect(() => {
     const getAllServices = async () => {
       try {
-        const data = await getServices('2131312');
+        const data = await getServices(token);
         setServices(splitArr(data, 2));
       } catch (error) {
         dispatch(

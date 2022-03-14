@@ -1,24 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import './LoginComponent.scss';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import spinner from '../../assets/spinner.svg';
 import BackDropComponent from '../UI/BackdropComponent';
-import { loginUser } from '../../helper/httpHelpers/usersHttp';
+import { getUserById, loginUser } from '../../helper/httpHelpers/usersHttp';
+
+import useForm from '../../hooks/useForm';
+import { authActions } from '../../store/auth';
 import { toastActions } from '../../store/toast';
+import { userActions } from '../../store/user';
 
 const LoginComponent = () => {
-  const [emailUser, setEmailUser] = useState('');
-  const [passwordUser, setPasswordUser] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    changeInputValueHandler: changeEmail,
+    inputBlurHandler: emailBlurHandler
+  } = useForm((e) =>
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      String(e).toLowerCase()
+    )
+  );
+
+  const {
+    value: password,
+    isValid: passwordIsValid,
+    hasError: passwordHasError,
+    changeInputValueHandler: changePassword,
+    inputBlurHandler: passwordBlurHandler
+  } = useForm((pass) => pass.trim().length >= 8);
 
   useEffect(() => {
     const isAUser = async () => {
       try {
-        const data = await loginUser(emailUser);
-        console.log(data);
+        const data = await loginUser(email, password);
+        const [dataUser] = await getUserById(data.access, data.docNumber);
+        dispatch(
+          authActions.setToken({
+            token: data.access,
+            refresh: data.refresh
+          })
+        );
+        dispatch(
+          userActions.setInfo({
+            isLogged: true,
+            firstName: dataUser.firstName,
+            lastName: dataUser.lastName,
+            docType: dataUser.docType,
+            docNumber: dataUser.docNumber,
+            role: dataUser.role,
+            email: dataUser.email,
+            password: dataUser.password
+          })
+        );
+        if (!dataUser.role) {
+          return navigate('/options', { replace: true });
+        }
+        navigate('/home', { replace: true });
       } catch (error) {
         dispatch(
           toastActions.setInfo({
@@ -35,14 +82,12 @@ const LoginComponent = () => {
 
     if (!isLoading) return;
     isAUser();
-  }, [isLoading, emailUser, passwordUser, dispatch]);
+    return () => {
+      setIsLoading(false);
+    };
+  }, [isLoading, email, password, dispatch, navigate]);
 
-  const handlerChangeEmail = (e) => {
-    setEmailUser(e.target.value);
-  };
-  const handlerChangePassword = (e) => {
-    setPasswordUser(e.target.value);
-  };
+  const loginIsValid = emailIsValid && passwordIsValid;
 
   const handlerChangeNext = (e) => {
     e.preventDefault();
@@ -60,27 +105,55 @@ const LoginComponent = () => {
         <div className="d-flex justify-content-center home-body align-items-center mt-1">
           <section className="d-flex flex-column w-100 align-items-center">
             <input
-              className="login-input_data m-2"
+              className={`login-input_data m-2 ${
+                emailHasError ? 'login-input_data__error' : ''
+              }`}
               placeholder="Correo electrónico"
-              value={emailUser}
-              onChange={handlerChangeEmail}
+              value={email}
+              type="email"
+              onChange={changeEmail}
+              onBlur={emailBlurHandler}
             />
-            <input
-              className="login-input_data m-2"
-              placeholder="Contraseña"
-              value={passwordUser}
-              onChange={handlerChangePassword}
-            />
+            {emailHasError && (
+              <p className="error_message">El email es inválido.</p>
+            )}
+            <div className="position-relative">
+              <input
+                className={`login-input_data m-2 ${
+                  passwordHasError ? 'login-input_data__error' : ''
+                }`}
+                placeholder="Contraseña"
+                value={password}
+                type={isVisible ? 'text' : 'password'}
+                onChange={changePassword}
+                onBlur={passwordBlurHandler}
+              />
+              {isVisible ? (
+                <AiFillEyeInvisible
+                  onClick={() => setIsVisible((prevState) => !prevState)}
+                  className="login-input__icon"
+                />
+              ) : (
+                <AiFillEye
+                  onClick={() => setIsVisible((prevState) => !prevState)}
+                  className="login-input__icon"
+                />
+              )}
+            </div>
+            {passwordHasError && (
+              <p className="error_message">
+                La contraseña debe contener al menos 8 carácteres.
+              </p>
+            )}
           </section>
         </div>
         <button
+          disabled={!loginIsValid}
           className="login-confirm_button"
           type="button"
           onClick={handlerChangeNext}
         >
-          <Link to="/options">
-            <BsFillArrowRightCircleFill />
-          </Link>
+          <BsFillArrowRightCircleFill />
         </button>
       </div>
     </>
