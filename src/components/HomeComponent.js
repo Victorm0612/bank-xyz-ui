@@ -44,8 +44,10 @@ const HomeComponent = () => {
         return;
       }
       if (Number(documentNumber) === 9586) {
+        setIsLoading(false);
         dispatch(userActions.logout());
         navigate('/', { replace: true });
+        return;
       }
       try {
         const [dataUser] = await getUserById(token, documentNumber);

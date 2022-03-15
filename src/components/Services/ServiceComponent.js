@@ -1,10 +1,14 @@
 import React from 'react';
 import './ServiceComponent.scss';
 
-const ServiceComponent = ({ service, onSelectService }) => {
+const ServiceComponent = ({
+  service,
+  infoService = false,
+  onSelectService
+}) => {
   const handlerSelectService = (e) => {
     e.preventDefault();
-    onSelectService(service.type);
+    onSelectService(infoService ? service : service.serviceType);
   };
 
   return (

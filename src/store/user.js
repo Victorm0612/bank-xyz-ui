@@ -14,26 +14,19 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setInfo(state, { payload }) {
-      localStorage.setItem('user', JSON.stringify({ ...payload }));
-      state.firstName = payload.firstName;
-      state.lastName = payload.lastName;
-      state.docType = payload.docType;
-      state.docNumber = payload.docNumber;
-      state.role = payload.role;
-      state.email = payload.email;
-      state.password = payload.password;
+    setInfo(state, action) {
+      const data = action.payload;
+      localStorage.setItem('user', JSON.stringify({ ...data }));
+      return {
+        ...data
+      };
     },
 
-    logout(state) {
+    logout() {
       localStorage.removeItem('user');
-      state.firstName = initialState.firstName;
-      state.lastName = initialState.lastName;
-      state.docType = initialState.docType;
-      state.docNumber = initialState.docNumber;
-      state.role = initialState.role;
-      state.email = initialState.email;
-      state.password = initialState.password;
+      return {
+        ...initialState
+      };
     }
   }
 });

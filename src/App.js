@@ -11,6 +11,8 @@ import NotFoundedComponent from './components/UI/NotFoundedComponent';
 import ToastComponent from './components/UI/ToastComponent';
 import WaitingComponent from './components/WaitingComponent/WaitingComponent';
 import MenuOptionsComponent from './components/MenuOptions/MenuOptionsComponent';
+import CashierMenu from './components/Cashier/CashierComponent';
+import CashierProfileComponent from './components/Cashier/CashierProfileComponent';
 
 const App = () => {
   const { pathname } = useLocation();
@@ -21,6 +23,7 @@ const App = () => {
     if (path.includes('options')) return 'Menú de opciones';
     if (path.includes('waiting')) return 'Sala de espera';
     if (path.includes('services')) return 'Elige un servicio';
+    if (path.includes('cashier')) return 'Tu cajero';
     if (path.includes('ticket')) return 'Ticket';
     if (path.includes('/')) return 'Login';
   };
@@ -37,7 +40,11 @@ const App = () => {
           <Route path="/services" element={<ServicesMenuComponent />} />
         )}
         {isLogged && <Route path="/ticket/:id" element={<TicketComponent />} />}
-        {!isLogged && <Route path="/" exact element={<LoginComponent />} />}
+        <Route path="/" exact element={<LoginComponent />} />
+        {isLogged && <Route path="/cashier" element={<CashierMenu />} />}
+        {isLogged && (
+          <Route path="/cashier/:id" element={<CashierProfileComponent />} />
+        )}
         {isLogged && <Route path="/waiting" element={<WaitingComponent />} />}
         {!role && <Route path="/options" element={<MenuOptionsComponent />} />}
         <Route path="*" element={<NotFoundedComponent />} />

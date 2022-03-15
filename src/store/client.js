@@ -14,15 +14,12 @@ const clientSlice = createSlice({
   name: 'client',
   initialState,
   reducers: {
-    setInfo(state, { payload }) {
-      localStorage.setItem('client', JSON.stringify({ ...payload }));
-      state.firstName = payload.firstName;
-      state.lastName = payload.lastName;
-      state.docType = payload.docType;
-      state.docNumber = payload.docNumber;
-      state.role = payload.role;
-      state.email = payload.email;
-      state.password = payload.password;
+    setInfo(state, action) {
+      const data = action.payload;
+      localStorage.setItem('client', JSON.stringify({ ...data }));
+      return {
+        ...data
+      };
     }
   }
 });
