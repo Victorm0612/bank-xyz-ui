@@ -32,7 +32,7 @@ export const updateTicket = async (token, body) => {
         id: body.id,
         orderNumber: body.orderNumber,
         serviceId_id: body.serviceId_id,
-        state: 1,
+        state: 2,
         userId_id: body.userId_id
       },
       {

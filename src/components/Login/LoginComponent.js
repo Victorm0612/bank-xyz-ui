@@ -4,10 +4,10 @@ import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 import spinner from '../../assets/spinner.svg';
 import BackDropComponent from '../UI/BackdropComponent';
 import { getUserById, loginUser } from '../../helper/httpHelpers/usersHttp';
-
 import useForm from '../../hooks/useForm';
 import { authActions } from '../../store/auth';
 import { toastActions } from '../../store/toast';
@@ -16,6 +16,7 @@ import { userActions } from '../../store/user';
 const LoginComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [captcha, setCaptcha] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -87,11 +88,15 @@ const LoginComponent = () => {
     };
   }, [isLoading, email, password, dispatch, navigate]);
 
-  const loginIsValid = emailIsValid && passwordIsValid;
+  const loginIsValid = emailIsValid && passwordIsValid && captcha;
 
   const handlerChangeNext = (e) => {
     e.preventDefault();
     setIsLoading(true);
+  };
+
+  const onChange = () => {
+    setCaptcha(true);
   };
 
   return (
@@ -119,7 +124,7 @@ const LoginComponent = () => {
             )}
             <div className="position-relative">
               <input
-                className={`login-input_data m-2 ${
+                className={`login-input_data m-2 mb-3 ${
                   passwordHasError ? 'login-input_data__error' : ''
                 }`}
                 placeholder="Contraseña"
@@ -145,6 +150,10 @@ const LoginComponent = () => {
                 La contraseña debe contener al menos 8 carácteres.
               </p>
             )}
+            <ReCAPTCHA
+              sitekey="6Ld5c-QeAAAAAFviDwuNxOm25F58B7oOEJ6hONSs"
+              onChange={onChange}
+            />
           </section>
         </div>
         <button
