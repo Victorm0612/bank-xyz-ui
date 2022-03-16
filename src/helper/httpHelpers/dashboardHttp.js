@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import * as moment from 'moment';
 import axiosInstance from '../../config/axiosConfig';
+// eslint-disable-next-line global-require
+const moment = require('moment').default || require('moment');
 
 const axios = axiosInstance;
 const TODAY = moment().format('YYYY-MM-DD');
