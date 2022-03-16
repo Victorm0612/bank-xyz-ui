@@ -22,7 +22,7 @@ const MenuOptionsComponent = () => (
           </Link>
         </button>
         <button className="menuOption-option_button mt-3" type="button">
-          <Link to="/waiting">
+          <Link to="/dashboard">
             <h2>Panel de administración</h2>
           </Link>
         </button>

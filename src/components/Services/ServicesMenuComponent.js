@@ -14,7 +14,8 @@ import './ServicesMenuComponent.scss';
 const ServicesMenuComponent = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
-  const { docNumber } = useSelector((state) => state.user);
+  const { docNumber } = useSelector((state) => state.client);
+  const { locationId } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const [action, setAction] = useState('getService');
   const [serviceSelected, setServiceSelected] = useState();
@@ -29,7 +30,12 @@ const ServicesMenuComponent = () => {
 
     const generateTicket = async () => {
       try {
-        const data = await generateNewTicket(serviceSelected, docNumber, token);
+        const data = await generateNewTicket(
+          serviceSelected,
+          docNumber,
+          locationId,
+          token
+        );
         navigate(`/ticket/${data.id}`, {
           state: {
             ...data

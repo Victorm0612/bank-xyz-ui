@@ -12,10 +12,15 @@ import useForm from '../../hooks/useForm';
 import { authActions } from '../../store/auth';
 import { toastActions } from '../../store/toast';
 import { userActions } from '../../store/user';
+import { getLocations } from '../../helper/httpHelpers/locationsHttp';
 
 const LoginComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [locations, setLocations] = useState([]);
+  const [locationSelected, setLocationSelected] = useState();
+  const [action, setAction] = useState('');
+  const [showLocations, setShowLocations] = useState(false);
   const [captcha, setCaptcha] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,6 +46,27 @@ const LoginComponent = () => {
   } = useForm((pass) => pass.trim().length >= 8);
 
   useEffect(() => {
+    const getLocation = async (token) => {
+      try {
+        const dataLocations = await getLocations(token);
+        setLocations(dataLocations);
+        setLocationSelected(dataLocations[0].id);
+        setShowLocations(true);
+      } catch (error) {
+        dispatch(
+          toastActions.setInfo({
+            title: 'Error',
+            text: error,
+            type: 'error',
+            show: true
+          })
+        );
+      } finally {
+        setIsLoading(false);
+        setAction('');
+      }
+    };
+
     const isAUser = async () => {
       try {
         const data = await loginUser(email, password);
@@ -63,10 +89,7 @@ const LoginComponent = () => {
             password: dataUser.password
           })
         );
-        if (!dataUser.role) {
-          return navigate('/options', { replace: true });
-        }
-        navigate('/home', { replace: true });
+        getLocation(data.access);
       } catch (error) {
         dispatch(
           toastActions.setInfo({
@@ -76,17 +99,16 @@ const LoginComponent = () => {
             show: true
           })
         );
-      } finally {
         setIsLoading(false);
       }
     };
 
     if (!isLoading) return;
-    isAUser();
+    if (!action.length) isAUser();
     return () => {
       setIsLoading(false);
     };
-  }, [isLoading, email, password, dispatch, navigate]);
+  }, [isLoading, email, password, dispatch, navigate, action]);
 
   const loginIsValid = emailIsValid && passwordIsValid && captcha;
 
@@ -99,11 +121,47 @@ const LoginComponent = () => {
     setCaptcha(true);
   };
 
+  const handlerChangeLocation = () => {
+    dispatch(
+      userActions.setLocation({
+        locationId: locationSelected
+      })
+    );
+    return navigate('/options', { replace: true });
+  };
+
   return (
     <>
       {isLoading && (
         <BackDropComponent>
           <img src={spinner} alt="loading-data" />
+        </BackDropComponent>
+      )}
+      {showLocations && (
+        <BackDropComponent>
+          <div className="card-location">
+            <h3 className="text-center mb-4">Seleccione una sede</h3>
+            <select
+              onChange={(e) => setLocationSelected(e.target.value)}
+              name="documents_type"
+              id="documents_type"
+              className="m-2 home-input__select"
+              readOnly
+            >
+              {locations.map((local) => (
+                <option key={local.id} value={local.id}>
+                  {local.locationName}
+                </option>
+              ))}
+            </select>
+            <button
+              className="card-location__confirm_button"
+              type="button"
+              onClick={handlerChangeLocation}
+            >
+              Enviar
+            </button>
+          </div>
         </BackDropComponent>
       )}
       <div className="login">

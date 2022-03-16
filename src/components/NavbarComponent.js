@@ -8,7 +8,7 @@ const NavbarComponent = ({ children }) => {
   const { isLogged } = useSelector((state) => state.user);
   return (
     <header className="nav justify-content-center">
-      <Link to={isLogged ? '/home' : '/'}>
+      <Link to={isLogged ? '/options' : '/'}>
         <img src={logoImg} alt="logo-bank-xyz" width="60" height="auto" />
       </Link>
       {children}

@@ -12,14 +12,15 @@ const CashierProfileComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
+  const { locationId } = useSelector((state) => state.user);
   const { state } = useLocation();
   const [order, setOrder] = useState(state.orderNumber);
 
   useEffect(() => {
     const nextTurn = async () => {
       try {
-        const data = await getNextTurn(token, state.teller_id);
-        await updateTicket(token, { ...state });
+        const data = await getNextTurn(token, state.teller_id, locationId);
+        await updateTicket(token, { ...state, locationId });
         setOrder(data.orderNumber);
       } catch (error) {
         dispatch(
@@ -36,7 +37,7 @@ const CashierProfileComponent = () => {
     };
     if (!isLoading) return;
     nextTurn();
-  }, [dispatch, isLoading, state, state.teller_id, token]);
+  }, [dispatch, isLoading, locationId, state, state.teller_id, token]);
 
   const handlerNextTurn = (e) => {
     e.preventDefault();

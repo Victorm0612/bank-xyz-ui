@@ -15,6 +15,7 @@ const CashierMenu = () => {
   const [cashier, setCashier] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useSelector((state) => state.auth);
+  const { locationId } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,7 +40,11 @@ const CashierMenu = () => {
 
     const nextTurn = async () => {
       try {
-        const data = await getNextTurn(token, typeService.service_id);
+        const data = await getNextTurn(
+          token,
+          typeService.service_id,
+          locationId
+        );
         navigate(
           `${typeService.serviceName.toLowerCase().replaceAll(' ', '_')}`,
           {
@@ -66,7 +71,7 @@ const CashierMenu = () => {
     if (!isLoading) return;
     if (action === 'getCashier') getAllCashier();
     if (action === 'nextTurn') nextTurn();
-  }, [action, dispatch, isLoading, navigate, token, typeService]);
+  }, [action, dispatch, isLoading, locationId, navigate, token, typeService]);
 
   const handlerSelectCashier = (service) => {
     setAction('nextTurn');

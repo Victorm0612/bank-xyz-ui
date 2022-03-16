@@ -13,6 +13,7 @@ import WaitingComponent from './components/WaitingComponent/WaitingComponent';
 import MenuOptionsComponent from './components/MenuOptions/MenuOptionsComponent';
 import CashierMenu from './components/Cashier/CashierComponent';
 import CashierProfileComponent from './components/Cashier/CashierProfileComponent';
+import DashboardComponent from './components/Dashboard/DashboardComponent';
 
 const App = () => {
   const { pathname } = useLocation();
@@ -46,7 +47,12 @@ const App = () => {
           <Route path="/cashier/:id" element={<CashierProfileComponent />} />
         )}
         {isLogged && <Route path="/waiting" element={<WaitingComponent />} />}
-        {!role && <Route path="/options" element={<MenuOptionsComponent />} />}
+        {isLogged && !role && (
+          <Route path="/dashboard" element={<DashboardComponent />} />
+        )}
+        {isLogged && !role && (
+          <Route path="/options" element={<MenuOptionsComponent />} />
+        )}
         <Route path="*" element={<NotFoundedComponent />} />
       </Routes>
     </div>

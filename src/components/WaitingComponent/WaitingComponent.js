@@ -12,12 +12,13 @@ const WaitingComponent = () => {
   const [queue, setQueue] = useState([]);
   const [diffQueue, setDiffQueue] = useState([]);
   const { token } = useSelector((state) => state.auth);
+  const { locationId } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getQueue = async () => {
       try {
-        const data = await getAllLine(token);
+        const data = await getAllLine(token, locationId);
         setQueue((prevState) => {
           const diff = prevState.filter(
             (element) =>

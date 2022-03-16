@@ -2,13 +2,19 @@ import axiosInstance from '../../config/axiosConfig';
 
 const axios = axiosInstance;
 
-export const generateNewTicket = async (serviceSelected, docNumber, token) => {
+export const generateNewTicket = async (
+  serviceSelected,
+  docNumber,
+  locationId,
+  token
+) => {
   try {
     const response = await axios.post(
       `/createTicket/`,
       {
         serviceType: serviceSelected,
-        docNumber
+        docNumber,
+        locationId
       },
       {
         headers: {
@@ -33,7 +39,8 @@ export const updateTicket = async (token, body) => {
         orderNumber: body.orderNumber,
         serviceId_id: body.serviceId_id,
         state: 2,
-        userId_id: body.userId_id
+        userId_id: body.userId_id,
+        locationId: body.locationId
       },
       {
         headers: {
@@ -47,9 +54,9 @@ export const updateTicket = async (token, body) => {
   }
 };
 
-export const getAllLine = async (token) => {
+export const getAllLine = async (token, locationId) => {
   try {
-    const response = await axios.get('getLine/', {
+    const response = await axios.get(`getLine/${locationId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -60,9 +67,9 @@ export const getAllLine = async (token) => {
   }
 };
 
-export const getNextTurn = async (token, type) => {
+export const getNextTurn = async (token, type, locationId) => {
   try {
-    const response = await axios.get(`getNextTurn/${type}`, {
+    const response = await axios.get(`getNextTurn/${type}/${locationId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
