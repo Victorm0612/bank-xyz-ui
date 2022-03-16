@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaUserCircle, FaUserAlt } from 'react-icons/fa';
+import { FaUserCircle, FaUserAlt, FaUsers } from 'react-icons/fa';
 import { BiSearchAlt } from 'react-icons/bi';
 import { FcStatistics } from 'react-icons/fc';
+import { AiOutlineFieldTime } from 'react-icons/ai';
 import { MdShowChart, MdDashboardCustomize } from 'react-icons/md';
 import { HiDocumentReport } from 'react-icons/hi';
 import { IoIosArrowDown } from 'react-icons/io';
@@ -23,6 +24,8 @@ const DashboardComponent = () => {
   const [mainInfo, setMainInfo] = useState(null);
   const { firstName, locationId } = useSelector((state) => state.user);
   const [countWait, setCountWait] = useState(0);
+  const [countClientsDay, setCountClientsDay] = useState(0);
+  const [countClientsMonth, setCountClientsMonth] = useState(0);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,10 +68,13 @@ const DashboardComponent = () => {
     getAllStatistics();
   });
 
-  setTimeout(
-    () => !isLoading && setCountWait(mainInfo && mainInfo.averageWait),
-    500
-  );
+  setTimeout(() => {
+    if (!isLoading) {
+      setCountWait(mainInfo && mainInfo.averageWait);
+      setCountClientsDay(mainInfo && mainInfo.clientsByDay[0]);
+      setCountClientsMonth(mainInfo && mainInfo.clientsByMonth[0]);
+    }
+  }, 500);
 
   const handlerLogout = () => {
     navigate('/');
@@ -154,7 +160,7 @@ const DashboardComponent = () => {
               <h5>Tiempo promedio de espera</h5>
               <h3>Sede Cali</h3>
               <hr />
-              <div className="d-flex justify-content-center align-items-center">
+              <div className="d-flex justify-content-center align-items-center h-100">
                 <AnimatedNumber
                   className="dashboard-home__cards__time-average m-2"
                   value={countWait}
@@ -163,7 +169,7 @@ const DashboardComponent = () => {
                 <span className="dashboard-home__cards__time-dimensions">
                   Hrs
                 </span>
-                <MdShowChart className="dashboard-home__cards__time-average__icon" />
+                <AiOutlineFieldTime className="dashboard-home__cards__time-average__icon" />
               </div>
             </div>
             <div className="dashboard-home__cards__avg card col-6">
@@ -200,11 +206,37 @@ const DashboardComponent = () => {
             </div>
           </div>
           <div className="row">
-            <div className="card col-6">
-              <h5>Three Card</h5>
+            <div className="dashboard-home__cards__avg card col-6">
+              <h5>Clientes por día</h5>
+              <h3>Sede Cali</h3>
+              <hr />
+              <div className="d-flex justify-content-center align-items-center">
+                <AnimatedNumber
+                  className="dashboard-home__cards__time-day m-2"
+                  value={countClientsDay}
+                  formatValue={(value) => value.toFixed(0)}
+                />
+                <span className="dashboard-home__cards__day-dimensions">
+                  clientes
+                </span>
+                <MdShowChart className="dashboard-home__cards__time-average__icon" />
+              </div>
             </div>
-            <div className="card col-6">
-              <h5>Fourth Card</h5>
+            <div className="dashboard-home__cards__avg card col-6">
+              <h5>Clientes por mes</h5>
+              <h3>Sede Cali</h3>
+              <hr />
+              <div className="d-flex justify-content-center align-items-center">
+                <AnimatedNumber
+                  className="dashboard-home__cards__time-day m-2"
+                  value={countClientsMonth}
+                  formatValue={(value) => value.toFixed(0)}
+                />
+                <span className="dashboard-home__cards__day-dimensions">
+                  clientes
+                </span>
+                <FaUsers className="dashboard-home__cards__time-average__icon" />
+              </div>
             </div>
           </div>
         </div>

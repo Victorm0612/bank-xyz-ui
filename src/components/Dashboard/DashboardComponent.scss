@@ -109,13 +109,25 @@
     }
     &__time-average {
       font-weight: bold;
-      font-size: 3rem;
+      font-size: 5rem;
 
       &__icon {
         height: 50px;
         width: 50px;
         color: green;
       }
+    }
+
+    &__time-day {
+      font-weight: bold;
+      font-size: 2.1rem;
+    }
+
+    &__day-dimensions {
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: 0.8rem;
+      margin-right: 1rem;
     }
 
     &__time-dimensions {
