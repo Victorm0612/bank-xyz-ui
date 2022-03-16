@@ -45,12 +45,11 @@ const CashierMenu = () => {
           {
             state: {
               ...data,
-              id: typeService.service_id,
+              teller_id: typeService.service_id,
               serviceName: typeService.serviceName
             }
           }
         );
-        console.log(data);
       } catch (error) {
         dispatch(
           toastActions.setInfo({
@@ -60,6 +59,8 @@ const CashierMenu = () => {
             show: true
           })
         );
+      } finally {
+        setIsLoading(false);
       }
     };
     if (!isLoading) return;

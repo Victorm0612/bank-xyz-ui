@@ -10,6 +10,7 @@ import { toastActions } from '../../store/toast';
 const WaitingComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [queue, setQueue] = useState([]);
+  const [diffQueue, setDiffQueue] = useState([]);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -17,8 +18,16 @@ const WaitingComponent = () => {
     const getQueue = async () => {
       try {
         const data = await getAllLine(token);
-        console.log(data);
-        setQueue(data);
+        setQueue((prevState) => {
+          const diff = prevState.filter(
+            (element) =>
+              !data.map((el) => el.orderNumber).includes(element.orderNumber)
+          );
+          diff.length
+            ? setDiffQueue(diff.map((el) => ({ ...el, show: true })))
+            : setDiffQueue([]);
+          return data;
+        });
       } catch (error) {
         dispatch(
           toastActions.setInfo({
@@ -46,6 +55,27 @@ const WaitingComponent = () => {
           <img src={spinner} alt="loading-data" />
         </BackDropComponent>
       )}
+      {diffQueue.length &&
+        diffQueue.map(
+          (element) =>
+            element.show && (
+              <BackDropComponent key={element.id}>
+                <div className="modal-card d-flex flex-column justify-content-center align-items-center">
+                  <h2>Siguiente turno</h2>
+                  <h1>{element.orderNumber}</h1>
+                </div>
+                {setTimeout(
+                  () =>
+                    setDiffQueue((prevState) =>
+                      prevState.map((el) =>
+                        el.id === element.id ? { ...el, show: false } : el
+                      )
+                    ),
+                  2000
+                )}
+              </BackDropComponent>
+            )
+        )}
       <div className="waiting-room">
         <div className="waiting-room__publicity">
           <CarouselComponent />

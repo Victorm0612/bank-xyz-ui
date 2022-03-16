@@ -30,7 +30,7 @@ const ServicesMenuComponent = () => {
     const generateTicket = async () => {
       try {
         const data = await generateNewTicket(serviceSelected, docNumber, token);
-        navigate(`/ticket/${data._id}`, {
+        navigate(`/ticket/${data.id}`, {
           state: {
             ...data
           }

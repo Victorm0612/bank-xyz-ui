@@ -4,7 +4,7 @@ import { BsArrowClockwise } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import './CashierProfileComponent.scss';
 import spinner from '../../assets/spinner.svg';
-import { getNextTurn } from '../../helper/httpHelpers/ticketHttp';
+import { getNextTurn, updateTicket } from '../../helper/httpHelpers/ticketHttp';
 import { toastActions } from '../../store/toast';
 import BackDropComponent from '../UI/BackdropComponent';
 
@@ -18,7 +18,8 @@ const CashierProfileComponent = () => {
   useEffect(() => {
     const nextTurn = async () => {
       try {
-        const data = await getNextTurn(token, state.id);
+        const data = await getNextTurn(token, state.teller_id);
+        await updateTicket(token, { ...state });
         setOrder(data.orderNumber);
       } catch (error) {
         dispatch(
@@ -35,7 +36,7 @@ const CashierProfileComponent = () => {
     };
     if (!isLoading) return;
     nextTurn();
-  }, [dispatch, isLoading, state.id, token]);
+  }, [dispatch, isLoading, state, state.teller_id, token]);
 
   const handlerNextTurn = (e) => {
     e.preventDefault();
