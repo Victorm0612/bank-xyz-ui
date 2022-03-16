@@ -3,40 +3,72 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaUserCircle, FaUserAlt } from 'react-icons/fa';
 import { BiSearchAlt } from 'react-icons/bi';
 import { FcStatistics } from 'react-icons/fc';
-import { MdDashboardCustomize } from 'react-icons/md';
+import { MdShowChart, MdDashboardCustomize } from 'react-icons/md';
 import { HiDocumentReport } from 'react-icons/hi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
 import { Chart } from 'react-google-charts';
+import AnimatedNumber from 'animated-number-react';
 import BackDropComponent from '../UI/BackdropComponent';
 import spinner from '../../assets/spinner.svg';
 import logoImg from '../../assets/img/logo.png';
 import './DashboardComponent.scss';
 import { userActions } from '../../store/user';
+import { toastActions } from '../../store/toast';
+import { getServices } from '../../helper/httpHelpers/servicesHttp';
+import { getStatistics } from '../../helper/httpHelpers/dashboardHttp';
 
 const DashboardComponent = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { firstName } = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(true);
+  const [mainInfo, setMainInfo] = useState(null);
+  const { firstName, locationId } = useSelector((state) => state.user);
+  const [countWait, setCountWait] = useState(0);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const options = {
-    title: 'Age vs. Weight comparison',
-    hAxis: { title: 'Age', viewWindow: { min: 0, max: 15 } },
-    vAxis: { title: 'Weight', viewWindow: { min: 0, max: 15 } },
-    legend: 'none'
-  };
+  useEffect(() => {
+    const getAllStatistics = async () => {
+      try {
+        const info = await getStatistics(token, locationId);
+        const services = await getServices(token);
+        setMainInfo({
+          ...info,
+          topTypeServices: info.topTypeServices.map((type) => {
+            const founded = services.find(
+              (el) => el.service_id === type.serviceId
+            );
+            if (founded) {
+              return {
+                ...type,
+                serviceName: founded.serviceName
+              };
+            }
+            return type;
+          })
+        });
+      } catch (error) {
+        dispatch(
+          toastActions.setInfo({
+            title: 'Error',
+            text: error,
+            type: 'error',
+            show: true
+          })
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const data = [
-    ['Age', 'Weight'],
-    [8, 12],
-    [4, 5.5],
-    [11, 14],
-    [4, 5],
-    [3, 3.5],
-    [6.5, 7]
-  ];
+    if (!isLoading) return;
+    getAllStatistics();
+  });
+
+  setTimeout(
+    () => !isLoading && setCountWait(mainInfo && mainInfo.averageWait),
+    500
+  );
 
   const handlerLogout = () => {
     navigate('/');
@@ -117,14 +149,64 @@ const DashboardComponent = () => {
           </div>
         </div>
         <div className="dashboard-home__cards">
-          <Chart
-            chartType="ScatterChart"
-            data={data}
-            options={options}
-            width="80%"
-            height="400px"
-            legendToggle
-          />
+          <div className="row">
+            <div className="dashboard-home__cards__avg card col-6">
+              <h5>Tiempo promedio de espera</h5>
+              <h3>Sede Cali</h3>
+              <hr />
+              <div className="d-flex justify-content-center align-items-center">
+                <AnimatedNumber
+                  className="dashboard-home__cards__time-average m-2"
+                  value={countWait}
+                  formatValue={(value) => value.toFixed(2)}
+                />
+                <span className="dashboard-home__cards__time-dimensions">
+                  Hrs
+                </span>
+                <MdShowChart className="dashboard-home__cards__time-average__icon" />
+              </div>
+            </div>
+            <div className="dashboard-home__cards__avg card col-6">
+              <h5>Servicio más solicitado</h5>
+              <h3>Sede Cali</h3>
+              <hr />
+              <div className="d-flex justify-content-center align-items-center">
+                {mainInfo && (
+                  <Chart
+                    chartType="Bar"
+                    options={{
+                      colors: ['#b0120a']
+                    }}
+                    width="100%"
+                    height="auto"
+                    data={
+                      mainInfo
+                        ? [
+                            ['Tipo de Servicio', 'Cantidad de Servicios'],
+                            ...mainInfo.topTypeServices
+                              .reverse()
+                              .map((el) => [
+                                el.serviceName.includes('General')
+                                  ? `CG${el.serviceName.split(' ')[2]}`
+                                  : el.serviceName,
+                                +el.count
+                              ])
+                          ]
+                        : []
+                    }
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="card col-6">
+              <h5>Three Card</h5>
+            </div>
+            <div className="card col-6">
+              <h5>Fourth Card</h5>
+            </div>
+          </div>
         </div>
       </div>
     </>

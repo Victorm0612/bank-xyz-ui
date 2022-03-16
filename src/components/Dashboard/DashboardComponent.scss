@@ -1,3 +1,5 @@
+@import "src/variables";
+
 .dashboard-home {
   &-bar {
     z-index: 25;
@@ -91,5 +93,49 @@
         width: 2rem;
       }
     }
+  }
+
+  &__cards {
+    margin-left: 240px;
+    padding: 2rem 2rem;
+
+    .col-6 {
+      margin: 0.5rem;
+      width: 35rem;
+    }
+
+    &__avg {
+      padding: 1rem 1rem;
+    }
+    &__time-average {
+      font-weight: bold;
+      font-size: 3rem;
+
+      &__icon {
+        height: 50px;
+        width: 50px;
+        color: green;
+      }
+    }
+
+    &__time-dimensions {
+      font-weight: bold;
+      font-size: 2rem;
+      margin-top: 0.8rem;
+    }
+  }
+}
+
+.list-top {
+  list-style: none;
+  counter-reset: my-counter;
+
+  li {
+    counter-increment: my-counter;
+  }
+
+  li::before {
+    content: counter(my-counter) ". ";
+    font-weight: bold;
   }
 }
