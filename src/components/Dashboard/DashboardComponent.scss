@@ -2,7 +2,6 @@
 
 .dashboard-home {
   &-bar {
-    z-index: 25;
     position: fixed;
     top: 0;
     display: flex;
@@ -55,6 +54,10 @@
           margin: 1rem 0;
           list-style-type: none;
 
+          a {
+            text-decoration: none;
+            color: white;
+          }
           svg {
             margin-right: 0.5rem;
           }

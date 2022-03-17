@@ -13,7 +13,8 @@ import WaitingComponent from './components/WaitingComponent/WaitingComponent';
 import MenuOptionsComponent from './components/MenuOptions/MenuOptionsComponent';
 import CashierMenu from './components/Cashier/CashierComponent';
 import CashierProfileComponent from './components/Cashier/CashierProfileComponent';
-import DashboardComponent from './components/Dashboard/DashboardComponent';
+import UsersComponent from './components/Dashboard/Components/UsersComponent';
+import DashHomeComponent from './components/Dashboard/Components/DashHomeComponent';
 
 const App = () => {
   const { pathname } = useLocation();
@@ -26,6 +27,7 @@ const App = () => {
     if (path.includes('services')) return 'Elige un servicio';
     if (path.includes('cashier')) return 'Tu cajero';
     if (path.includes('ticket')) return 'Ticket';
+    if (path.includes('dashboard/users')) return 'Usuarios';
     if (path.includes('/')) return 'Login';
   };
 
@@ -48,7 +50,10 @@ const App = () => {
         )}
         {isLogged && <Route path="/waiting" element={<WaitingComponent />} />}
         {isLogged && !role && (
-          <Route path="/dashboard" element={<DashboardComponent />} />
+          <Route path="/dashboard" element={<DashHomeComponent />} />
+        )}
+        {isLogged && !role && (
+          <Route path="/dashboard/users" element={<UsersComponent />} />
         )}
         {isLogged && !role && (
           <Route path="/options" element={<MenuOptionsComponent />} />

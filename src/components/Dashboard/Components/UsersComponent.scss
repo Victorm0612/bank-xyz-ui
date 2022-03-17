@@ -1,0 +1,82 @@
+
+@import 'src/_variables.scss';
+
+.users-list {
+  &__title {
+    color: white;
+    text-shadow: 0 0 5px $shadow;
+    margin-bottom: 1rem;
+  }
+  &__card {
+    overflow-y: scroll;
+    height: 420px;
+  }
+  &__create {
+    position: relative;
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 0.5rem 0.5rem;
+      margin: 0.5rem 0.5rem;
+      width: 10rem;
+      background-color: white;
+      color: $title-color;
+      font-weight: bold;
+    }
+  }
+  &__table {
+    text-align: left;
+    thead {
+      th {
+        padding: 0.5rem 1rem;
+      }
+      border-bottom: 1px solid black;
+      font-weight: bold;
+    }
+    tbody {
+      td {
+        padding: 0.3rem 1rem;
+      }
+
+      tr:last-child {
+        td {
+          padding-bottom: 1rem;
+        }
+      }
+    }
+    &-options {
+      svg {
+        cursor: pointer;
+        margin: 0 0.3rem;
+      }
+    }
+  }
+}
+.delete-card {
+  width: 30rem;
+  border-radius: 10px;
+  padding: 2rem 1.5rem;
+
+  &__buttons {
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 0.5rem 0.5rem;
+      margin: 0.5rem 0.5rem;
+      width: 10rem;
+      background-color: $title-color;
+      color: white;
+      font-weight: bold;
+    }
+
+    button:nth-child(1) {
+      background-color: rgb(201, 201, 201);
+      color: $title-color;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
