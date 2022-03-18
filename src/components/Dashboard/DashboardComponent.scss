@@ -68,7 +68,7 @@
     &__user {
       width: 20rem;
 
-      h3 {
+      h4 {
         color: white;
       }
 
@@ -101,6 +101,7 @@
   &__cards {
     margin-left: 240px;
     padding: 2rem 2rem;
+    position: relative;
 
     .col-6 {
       margin: 0.5rem;
@@ -153,4 +154,10 @@
     content: counter(my-counter) ". ";
     font-weight: bold;
   }
+}
+
+.search-option a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
 }

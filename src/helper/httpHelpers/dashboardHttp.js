@@ -7,7 +7,13 @@ const axios = axiosInstance;
 const TODAY = moment().format('YYYY-MM-DD');
 const MONTH = moment().format('MM');
 
-export const getStatistics = async (token, locationId) => {
+export const getStatistics = async (token, locationId, day, month) => {
+  let daySelected = TODAY;
+  let monthSelected = MONTH;
+  if (day && month) {
+    daySelected = day;
+    monthSelected = month;
+  }
   try {
     const headers = {
       headers: {
@@ -23,11 +29,11 @@ export const getStatistics = async (token, locationId) => {
       headers
     );
     const clientsByDay = await axios.get(
-      `getClientsByDay/${locationId}/${TODAY}`,
+      `getClientsByDay/${locationId}/${daySelected}`,
       headers
     );
     const clientsByMonth = await axios.get(
-      `getClientsByMonth/${locationId}/${MONTH}`,
+      `getClientsByMonth/${locationId}/${monthSelected}`,
       headers
     );
     return {

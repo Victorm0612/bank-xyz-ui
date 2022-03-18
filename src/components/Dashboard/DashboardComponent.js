@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUserCircle, FaUserAlt } from 'react-icons/fa';
 import { BiSearchAlt } from 'react-icons/bi';
@@ -13,12 +13,24 @@ import { userActions } from '../../store/user';
 
 const DashboardComponent = ({ children }) => {
   const { firstName } = useSelector((state) => state.user);
+  const [keySearch, setKeySearch] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handlerLogout = () => {
     navigate('/');
     dispatch(userActions.logout());
+  };
+
+  const optionsSearch = [
+    { id: '1', text: 'Dashboard', link: '/dashboard' },
+    { id: '2', text: 'Usuarios', link: '/dashboard/users' },
+    { id: '3', text: 'Estadísticas', link: '/dashboard/statistics' },
+    { id: '4', text: 'Sedes', link: '/dashboard/locations' }
+  ];
+
+  const changeKeySearch = (e) => {
+    setKeySearch(e.target.value);
   };
 
   return (
@@ -59,11 +71,38 @@ const DashboardComponent = ({ children }) => {
             </Link>
           </div>
           <div className="position-relative">
-            <input placeholder="search" />
+            <div className="dropdown">
+              <input
+                id="dropdownOptionsButton"
+                placeholder="search"
+                data-bs-toggle="dropdown"
+                onChange={changeKeySearch}
+              />
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="dropdownOptionsButton"
+              >
+                {optionsSearch
+                  .filter((el) =>
+                    el.text
+                      .toLowerCase()
+                      .replace(/\s/g, '')
+                      .includes(keySearch.toLowerCase().replace(/\s/g, ''))
+                  )
+                  .map((option) => (
+                    <li
+                      className="search-option dropdown-item text-center"
+                      key={option.id}
+                    >
+                      <Link to={option.link}>{option.text}</Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
             <BiSearchAlt className="dashboard-home-bar__search__icon" />
           </div>
           <div className="dashboard-home-bar__user d-flex justify-content-center align-items-center">
-            <h3>Hola, {firstName}</h3>
+            <h4>Hola, {firstName}</h4>
             <FaUserCircle className="dashboard-home-bar__user__icon" />
             <div className="dropdown">
               <div
