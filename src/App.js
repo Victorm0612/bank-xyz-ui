@@ -16,6 +16,7 @@ import CashierProfileComponent from './components/Cashier/CashierProfileComponen
 import UsersComponent from './components/Dashboard/Components/Users/UsersComponent';
 import DashHomeComponent from './components/Dashboard/Components/DashHomeComponent';
 import LocationsComponent from './components/Dashboard/Components/Locations/LocationsComponent';
+import StatisticsComponent from './components/Dashboard/Components/Statistics/StatisticsComponent';
 
 const App = () => {
   const { pathname } = useLocation();
@@ -58,6 +59,12 @@ const App = () => {
         )}
         {isLogged && !role && (
           <Route path="/dashboard/locations" element={<LocationsComponent />} />
+        )}
+        {isLogged && !role && (
+          <Route
+            path="/dashboard/statistics"
+            element={<StatisticsComponent />}
+          />
         )}
         {isLogged && !role && (
           <Route path="/options" element={<MenuOptionsComponent />} />

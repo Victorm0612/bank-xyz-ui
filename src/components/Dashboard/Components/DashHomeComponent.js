@@ -62,7 +62,7 @@ const DashHomeComponent = () => {
 
     if (!isLoading) return;
     getAllStatistics();
-  });
+  }, [dispatch, isLoading, locationId, token]);
 
   setTimeout(() => {
     if (!isLoading) {
