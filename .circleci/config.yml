@@ -18,6 +18,10 @@ jobs:
           name: Install dependencies
           command:
             yarn install
+      - run:
+          name: Install serve
+          command:
+            npm install serve -g
 
       - save_cache:
           paths:
