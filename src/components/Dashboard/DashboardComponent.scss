@@ -1,0 +1,163 @@
+@import "src/variables";
+
+.dashboard-home {
+  &-bar {
+    position: fixed;
+    top: 0;
+    display: flex;
+    width: 100%;
+
+    &__search {
+      position: fixed;
+      padding-right: 1rem;
+      background-color: #4F4AFD;
+      width: 100%;
+      height: 5rem;
+      box-shadow: 20px 5px 20px rgba(0, 0, 0, 0.308);
+
+      input {
+        border-radius: 10px;
+        border: none;
+        padding: 0.5rem 0.5rem;
+        width: 25rem;
+      }
+
+      &__logo {
+        background-color: #29269A;
+        height: 100%;
+        width: 15.1rem;
+      }
+
+      &__icon {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 5px;
+        right: 15px;
+        cursor: pointer
+      }
+    }
+    &__menu {
+      background-color: #3733BF;
+      height: 100vh;
+      width: 15rem;
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.308);
+
+      ul {
+        color: white;
+        padding: 0;
+        margin: 0;
+        li {
+          text-align: left;
+          font-size: 1.3rem;
+          cursor: pointer;
+          margin: 1rem 0;
+          list-style-type: none;
+
+          a {
+            text-decoration: none;
+            color: white;
+          }
+          svg {
+            margin-right: 0.5rem;
+          }
+        }
+      }
+    }
+
+    &__user {
+      width: 20rem;
+
+      h4 {
+        color: white;
+      }
+
+      .dropdown {
+        .button-logout {
+          border: none;
+          background: none;
+        }
+      }
+
+      &__icon {
+        margin-left: 1rem;
+        height: 30%;
+        width: 15%;
+        color: rgb(245, 243, 243);
+        background-color: gray;
+        border-radius: 55%;
+        box-shadow: 0 0 5px rgb(61, 61, 61);
+      }
+
+      &__dropdown {
+        color: white;
+        margin-left: 0.5rem;
+        height: 5rem;
+        width: 2rem;
+      }
+    }
+  }
+
+  &__cards {
+    margin-left: 240px;
+    padding: 2rem 2rem;
+    position: relative;
+
+    .col-6 {
+      margin: 0.5rem;
+      width: 35rem;
+    }
+
+    &__avg {
+      padding: 1rem 1rem;
+    }
+    &__time-average {
+      font-weight: bold;
+      font-size: 5rem;
+
+      &__icon {
+        height: 50px;
+        width: 50px;
+        color: green;
+      }
+    }
+
+    &__time-day {
+      font-weight: bold;
+      font-size: 2.1rem;
+    }
+
+    &__day-dimensions {
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: 0.8rem;
+      margin-right: 1rem;
+    }
+
+    &__time-dimensions {
+      font-weight: bold;
+      font-size: 2rem;
+      margin-top: 0.8rem;
+    }
+  }
+}
+
+.list-top {
+  list-style: none;
+  counter-reset: my-counter;
+
+  li {
+    counter-increment: my-counter;
+  }
+
+  li::before {
+    content: counter(my-counter) ". ";
+    font-weight: bold;
+  }
+}
+
+.search-option a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}

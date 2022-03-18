@@ -1,0 +1,50 @@
+@import "/src/variables";
+
+.waiting-room {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+
+  &__panel {
+    background: white;
+    height: 100vh;
+    position: absolute;
+    z-index: 90;
+    right: 0;
+    top: 0;
+    width: 20rem;
+
+    ul {
+      padding: 0;
+    }
+
+    li {
+      list-style-type: none;
+      box-shadow: 0 0 5px $shadow;
+      border-radius: 10px;
+      margin: 2rem 0;
+      font-size: 2rem;
+      font-weight: bold;
+
+    }
+  }
+
+  &__publicity {
+    width: 64rem;
+    height: 36rem;
+    margin-left: 6rem;
+    box-shadow: 0 0 6px $shadow;
+  }
+}
+
+.modal-card {
+  background-color: white;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 10px;
+
+  h2 {
+    color: $title-color;
+    font-weight: bold;
+  }
+}
