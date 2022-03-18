@@ -12,6 +12,7 @@ import { getServices } from '../../../helper/httpHelpers/servicesHttp';
 import { getStatistics } from '../../../helper/httpHelpers/dashboardHttp';
 import BackDropComponent from '../../UI/BackdropComponent';
 import DashboardComponent from '../DashboardComponent';
+import { getLocationById } from '../../../helper/httpHelpers/locationsHttp';
 
 const DashHomeComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,9 +28,11 @@ const DashHomeComponent = () => {
     const getAllStatistics = async () => {
       try {
         const info = await getStatistics(token, locationId);
+        const { locationName } = await getLocationById(token, locationId);
         const services = await getServices(token);
         setMainInfo({
           ...info,
+          locationName,
           topTypeServices: info.topTypeServices.map((type) => {
             const founded = services.find(
               (el) => el.service_id === type.serviceId
@@ -63,7 +66,9 @@ const DashHomeComponent = () => {
 
   setTimeout(() => {
     if (!isLoading) {
-      setCountWait(mainInfo && mainInfo.averageWait);
+      setCountWait(
+        mainInfo && +mainInfo.averageWait.replace(':', '.').replaceAll(':', '')
+      );
       setCountClientsDay(mainInfo && mainInfo.clientsByDay[0]);
       setCountClientsMonth(mainInfo && mainInfo.clientsByMonth[0]);
     }
@@ -79,7 +84,7 @@ const DashHomeComponent = () => {
       <div className="row">
         <div className="dashboard-home__cards__avg card col-6">
           <h5>Tiempo promedio de espera</h5>
-          <h3>Sede Cali</h3>
+          <h3>Sede {mainInfo?.locationName}</h3>
           <hr />
           <div className="d-flex justify-content-center align-items-center h-100">
             <AnimatedNumber
@@ -93,7 +98,7 @@ const DashHomeComponent = () => {
         </div>
         <div className="dashboard-home__cards__avg card col-6">
           <h5>Servicio más solicitado</h5>
-          <h3>Sede Cali</h3>
+          <h3>Sede {mainInfo?.locationName}</h3>
           <hr />
           <div className="d-flex justify-content-center align-items-center">
             {mainInfo && (
@@ -127,7 +132,7 @@ const DashHomeComponent = () => {
       <div className="row">
         <div className="dashboard-home__cards__avg card col-6">
           <h5>Clientes por día</h5>
-          <h3>Sede Cali</h3>
+          <h3>Sede {mainInfo?.locationName}</h3>
           <hr />
           <div className="d-flex justify-content-center align-items-center">
             <AnimatedNumber
@@ -143,7 +148,7 @@ const DashHomeComponent = () => {
         </div>
         <div className="dashboard-home__cards__avg card col-6">
           <h5>Clientes por mes</h5>
-          <h3>Sede Cali</h3>
+          <h3>Sede {mainInfo?.locationName}</h3>
           <hr />
           <div className="d-flex justify-content-center align-items-center">
             <AnimatedNumber

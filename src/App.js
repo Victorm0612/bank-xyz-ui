@@ -13,8 +13,9 @@ import WaitingComponent from './components/WaitingComponent/WaitingComponent';
 import MenuOptionsComponent from './components/MenuOptions/MenuOptionsComponent';
 import CashierMenu from './components/Cashier/CashierComponent';
 import CashierProfileComponent from './components/Cashier/CashierProfileComponent';
-import UsersComponent from './components/Dashboard/Components/UsersComponent';
+import UsersComponent from './components/Dashboard/Components/Users/UsersComponent';
 import DashHomeComponent from './components/Dashboard/Components/DashHomeComponent';
+import LocationsComponent from './components/Dashboard/Components/Locations/LocationsComponent';
 
 const App = () => {
   const { pathname } = useLocation();
@@ -54,6 +55,9 @@ const App = () => {
         )}
         {isLogged && !role && (
           <Route path="/dashboard/users" element={<UsersComponent />} />
+        )}
+        {isLogged && !role && (
+          <Route path="/dashboard/locations" element={<LocationsComponent />} />
         )}
         {isLogged && !role && (
           <Route path="/options" element={<MenuOptionsComponent />} />

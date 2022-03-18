@@ -1,45 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import IconEdit from '../../../assets/icons/IconEdit';
-import IconTrash from '../../../assets/icons/IconTrash';
-import { deleteUser, getAllUsers } from '../../../helper/httpHelpers/usersHttp';
-import { toastActions } from '../../../store/toast';
-import BackDropComponent from '../../UI/BackdropComponent';
-import DashboardComponent from '../DashboardComponent';
-import spinner from '../../../assets/spinner.svg';
-import EditUserForm from './EditUserForm';
-import './UsersComponent.scss';
+import BackDropComponent from '../../../UI/BackdropComponent';
+import DashboardComponent from '../../DashboardComponent';
+import spinner from '../../../../assets/spinner.svg';
+import './LocationsComponent.scss';
+import {
+  deleteLocation,
+  getLocations
+} from '../../../../helper/httpHelpers/locationsHttp';
+import { toastActions } from '../../../../store/toast';
+import IconEdit from '../../../../assets/icons/IconEdit';
+import IconTrash from '../../../../assets/icons/IconTrash';
+import EditLocationForm from './EditLocationForm';
 
-const UsersComponent = () => {
+const LocationsComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [usersList, setUsersList] = useState([]);
-  const [userSelected, setUserSelected] = useState(null);
+  const [locations, setLocations] = useState([]);
+  const [locationSelected, setLocationSelected] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const closeEditUserForm = () => {
+  const closeEditLocationForm = () => {
     setShowEdit(false);
     setIsLoading(true);
   };
 
-  const closeCreateUserForm = () => {
+  const closeCreateLocationForm = () => {
     setShowCreate(false);
     setIsLoading(true);
   };
 
-  const closeDeleteUserForm = () => {
+  const closeDeleteLocationForm = () => {
     setShowDelete(false);
     setIsLoading(true);
   };
 
   useEffect(() => {
-    const getUsersList = async () => {
+    const getAllLocations = async () => {
       try {
-        const data = await getAllUsers(token);
-        setUsersList(data);
+        const response = await getLocations(token);
+        setLocations(response);
       } catch (error) {
         dispatch(
           toastActions.setInfo({
@@ -55,15 +58,15 @@ const UsersComponent = () => {
     };
 
     if (!isLoading) return;
-    getUsersList();
+    getAllLocations();
   }, [dispatch, isLoading, token]);
 
   useEffect(() => {
     const deleteUserSelected = async () => {
       try {
-        await deleteUser(token, userSelected.id);
-        const data = await getAllUsers(token);
-        setUsersList(data);
+        await deleteLocation(token, locationSelected.id);
+        const data = await getLocations(token);
+        setLocations(data);
         dispatch(
           toastActions.setInfo({
             title: 'Success',
@@ -82,11 +85,11 @@ const UsersComponent = () => {
           })
         );
       } finally {
-        closeDeleteUserForm();
+        closeDeleteLocationForm();
       }
     };
     if (isLoading && showDelete) return deleteUserSelected();
-  }, [dispatch, isLoading, showDelete, token, userSelected]);
+  }, [dispatch, isLoading, locationSelected, showDelete, token]);
 
   return (
     <DashboardComponent>
@@ -97,14 +100,14 @@ const UsersComponent = () => {
       )}
       {showCreate && (
         <BackDropComponent>
-          <EditUserForm closeCreate={closeCreateUserForm} create />
+          <EditLocationForm closeCreate={closeCreateLocationForm} create />
         </BackDropComponent>
       )}
       {showEdit && (
         <BackDropComponent>
-          <EditUserForm
-            user={userSelected}
-            closeEdit={closeEditUserForm}
+          <EditLocationForm
+            location={locationSelected}
+            closeEdit={closeEditLocationForm}
             create={false}
           />
         </BackDropComponent>
@@ -112,9 +115,9 @@ const UsersComponent = () => {
       {showDelete && (
         <BackDropComponent>
           <div className="card text-center delete-card">
-            <h2>¿Desea eliminar este usuario?</h2>
+            <h2>¿Desea eliminar esta sede?</h2>
             <div className="delete-card__buttons d-flex justify-content-center align-items-center">
-              <button type="button" onClick={closeDeleteUserForm}>
+              <button type="button" onClick={closeDeleteLocationForm}>
                 Cancelar
               </button>
               <button type="button" onClick={() => setIsLoading(true)}>
@@ -124,43 +127,37 @@ const UsersComponent = () => {
           </div>
         </BackDropComponent>
       )}
-      <div className="users-list">
-        <h1 className="users-list__title">Gestión de usuarios</h1>
-        <div className="users-list__create d-flex justify-content-end m-3">
+      <div className="locations-list">
+        <h1 className="locations-list__title">Gestión de Sedes</h1>
+        <div className="locations-list__create d-flex justify-content-end m-3">
           <button type="button" onClick={() => setShowCreate(true)}>
-            Crear usuario
+            Crear Sede
           </button>
         </div>
-        <div className="users-list__card card">
-          <table className="users-list__table">
+        <div className="locations-list__card card">
+          <table className="locations-list__table">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Nombre</th>
-                <th>Correo</th>
-                <th>Tipo</th>
                 <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
-              {usersList.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>
-                    {user.firstName} {user.lastName}
-                  </td>
-                  <td>{user.email}</td>
-                  <td>{user.role ? 'Cliente' : 'Empleado/Admin'}</td>
-                  <td className="users-list__table-options">
+              {locations.map((location) => (
+                <tr key={location.id}>
+                  <td>{location.id}</td>
+                  <td>{location.locationName}</td>
+                  <td className="locations-list__table-options">
                     <IconEdit
                       action={() => {
-                        setUserSelected(user);
+                        setLocationSelected(location);
                         setShowEdit(true);
                       }}
                     />
                     <IconTrash
                       action={() => {
-                        setUserSelected(user);
+                        setLocationSelected(location);
                         setShowDelete(true);
                       }}
                     />
@@ -175,4 +172,4 @@ const UsersComponent = () => {
   );
 };
 
-export default UsersComponent;
+export default LocationsComponent;

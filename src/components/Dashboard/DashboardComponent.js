@@ -28,7 +28,8 @@ const DashboardComponent = ({ children }) => {
           <ul>
             <li>
               <Link to="/dashboard">
-                <MdDashboardCustomize /> Dashboard
+                <MdDashboardCustomize />
+                Dashboard
               </Link>
             </li>
             <li>
@@ -44,9 +45,9 @@ const DashboardComponent = ({ children }) => {
               </Link>
             </li>
             <li>
-              <Link to="/dashboard/reports">
+              <Link to="/dashboard/locations">
                 <HiDocumentReport />
-                Reportes
+                Sedes
               </Link>
             </li>
           </ul>

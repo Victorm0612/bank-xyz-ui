@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUser, updateUser } from '../../../helper/httpHelpers/usersHttp';
-import useForm from '../../../hooks/useForm';
-import { toastActions } from '../../../store/toast';
+import {
+  createUser,
+  updateUser
+} from '../../../../helper/httpHelpers/usersHttp';
+import useForm from '../../../../hooks/useForm';
+import { toastActions } from '../../../../store/toast';
 import './EditUserForm.scss';
 
 const EditUserForm = ({ user, closeCreate, closeEdit, create = false }) => {
